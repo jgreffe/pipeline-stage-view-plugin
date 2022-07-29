@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-var builder = require('jenkins-js-builder');
+var builder = require('@jenkins-cd/js-builder');
 
 //
 // Bundle the modules.
@@ -37,12 +37,11 @@ builder.bundle('src/main/js/stageview_adjunct.js')
     .minify()
     .inDir('target/generated-adjuncts/org/jenkinsci/pipeline');
 builder.bundle('src/main/js/stageview.js')
-    .withExternalModuleMapping('handlebars', 'handlebars:handlebars3')
-    .withExternalModuleMapping('moment', 'momentjs:momentjs2')
-    .asJenkinsModuleResource()
+    .import('handlebars', 'handlebars:handlebars3')
+    .import('moment', 'momentjs:momentjs2')
     .export();
 
 // Explicitly setting the task list so as to disable jshint
 // TODO: Remove the line below + fix jshint build errors
-builder.defineTasks(['bundle', 'rebundle']);
+builder.defineTasks(['bundle', 'bundle:watch']);
 builder.defineTask('lint', function() {}); // https://github.com/jenkinsci/plugin-pom/pull/20#issuecomment-206374472
